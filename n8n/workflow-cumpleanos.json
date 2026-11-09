@@ -1,0 +1,148 @@
+{
+  "id": "cumpleanosWf0001",
+  "name": "Felicitaciones de Cumpleaños - Gmail OAuth2",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 8
+            }
+          ]
+        }
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000001",
+      "name": "Cron 08:00 AM",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://backend:3000/api/recursos/pusheen-gif",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0007-4000-8000-000000000007",
+      "name": "Obtener GIF Pusheen",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "http://backend:3000/api/personas/envios-hoy",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0002-4000-8000-000000000002",
+      "name": "Consultar Envíos de Hoy",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generado por scripts/generar-workflow.js — no editar aquí, editar las plantillas HTML.\nconst PLANTILLA_TARJETA = \"<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>¡Felicidades!</title></head><body style='margin:0;padding:0;background-color:#ffe066;font-family:\\\"Trebuchet MS\\\",\\\"Segoe UI\\\",Roboto,Helvetica,Arial,sans-serif;'><table role='presentation' width='100%' cellpadding='0' cellspacing='0' style='background-color:#ffe066;background-image:linear-gradient(135deg,#ffe066 0%,#ff9ecf 50%,#8be9ff 100%);padding:32px 12px;'><tr><td align='center'><table role='presentation' width='100%' cellpadding='0' cellspacing='0' style='max-width:560px;background-color:#ffffff;border-radius:28px;overflow:hidden;border:6px solid #ff3d9a;'><tr><td align='center' style='background-color:#ff3d9a;padding:12px 8px;font-size:26px;line-height:1;letter-spacing:6px;'>🎈🎉🎊🎁🥳🎊🎉🎈</td></tr><tr><td align='center' style='background-color:#2b0a57;padding:30px 10px 26px;'><div style='font-size:42px;line-height:1.15;font-weight:900;letter-spacing:2px;font-family:\\\"Arial Black\\\",\\\"Trebuchet MS\\\",Arial,sans-serif;'><span style='color:#ff1744;'>F</span><span style='color:#ff9100;'>E</span><span style='color:#ffea00;'>L</span><span style='color:#00e676;'>I</span><span style='color:#00b0ff;'>C</span><span style='color:#d500f9;'>I</span><span style='color:#ff4081;'>D</span><span style='color:#76ff03;'>A</span><span style='color:#ffc400;'>D</span><span style='color:#18ffff;'>E</span><span style='color:#ff6e40;'>S</span></div><div style='margin-top:14px;font-size:34px;line-height:1.2;font-weight:800;color:#ffffff;'>{{ nombre }}</div><div style='margin-top:10px;font-size:22px;line-height:1;letter-spacing:4px;'>✨⭐✨</div></td></tr><tr><td align='center' style='background-color:#d398b9;padding:28px 20px 8px;'><img src='cid:pusheen-pastel' width='300' alt='Pusheen comiendo pastel de cumpleaños' style='display:block;width:100%;max-width:300px;height:auto;border:0;border-radius:20px;'></td></tr><tr><td align='center' style='background-color:#e7ea98;padding:20px 32px 30px;'><p style='margin:0 0 6px;font-size:16px;color:#7c3aed;font-weight:700;text-transform:uppercase;letter-spacing:2px;'>De parte de tu equipo</p><p style='margin:0 0 20px;font-size:40px;line-height:1;font-weight:900;letter-spacing:3px;font-family:\\\"Arial Black\\\",\\\"Trebuchet MS\\\",Arial,sans-serif;'><span style='color:#ff1744;'>D</span><span style='color:#00c853;'>G</span><span style='color:#00b0ff;'>T</span><span style='color:#d500f9;'>S</span><span style='color:#ff4081;'>I</span></p><table role='presentation' cellpadding='0' cellspacing='0'><tr><td align='center' style='background-color:#ff3d9a;background-image:linear-gradient(90deg,#ff9100,#ff3d9a,#7c3aed);border-radius:999px;padding:16px 30px;color:#ffffff;font-size:19px;font-weight:800;line-height:1.3;'>🎂 ¡Pásala súper bien en este día! 🎂</td></tr></table></td></tr><tr><td align='center' style='background-color:#00b0ff;padding:12px 8px;font-size:24px;line-height:1;letter-spacing:6px;'>🧁🎶🍰💖🍰🎶🧁</td></tr></table></td></tr></table></body></html>\";\nconst PLANTILLA_NOTIFICACION = \"<!DOCTYPE html><html lang='es'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>¡Hoy hay cumpleaños!</title></head><body style='margin:0;padding:0;background-color:#8be9ff;font-family:\\\"Trebuchet MS\\\",\\\"Segoe UI\\\",Roboto,Helvetica,Arial,sans-serif;'><table role='presentation' width='100%' cellpadding='0' cellspacing='0' style='background-color:#8be9ff;background-image:linear-gradient(135deg,#8be9ff 0%,#ff9ecf 50%,#ffe066 100%);padding:32px 12px;'><tr><td align='center'><table role='presentation' width='100%' cellpadding='0' cellspacing='0' style='max-width:560px;background-color:#ffffff;border-radius:28px;overflow:hidden;border:6px solid #00b0ff;'><tr><td align='center' style='background-color:#00b0ff;padding:12px 8px;font-size:26px;line-height:1;letter-spacing:6px;'>🎈🎉🎊🎁🥳🎊🎉🎈</td></tr><tr><td align='center' style='background-color:#2b0a57;padding:28px 16px 24px;'><div style='font-size:30px;line-height:1.2;font-weight:900;letter-spacing:1px;font-family:\\\"Arial Black\\\",\\\"Trebuchet MS\\\",Arial,sans-serif;'><span style='color:#ff1744;'>¡</span><span style='color:#ff9100;'>H</span><span style='color:#ffea00;'>O</span><span style='color:#00e676;'>Y</span> <span style='color:#00b0ff;'>H</span><span style='color:#d500f9;'>A</span><span style='color:#ff4081;'>Y</span> <span style='color:#76ff03;'>P</span><span style='color:#ffc400;'>A</span><span style='color:#18ffff;'>S</span><span style='color:#ff6e40;'>T</span><span style='color:#ff1744;'>E</span><span style='color:#ffea00;'>L</span><span style='color:#00e676;'>!</span></div><p style='margin:12px 0 0;color:#e9d5ff;font-size:14px;letter-spacing:3px;text-transform:uppercase;'>Recordatorio de cumpleaños</p></td></tr><tr><td align='center' style='background-color:#fff4fa;padding:28px 32px 8px;color:#334155;font-size:17px;line-height:1.6;'><p style='margin:0 0 10px;'>Hola <strong>{{ nombre }}</strong> 👋</p><p style='margin:0 0 12px;'>Hoy celebramos el cumpleaños de:</p><p style='margin:0 0 4px;color:#ff3d9a;font-size:30px;line-height:1.2;font-weight:900;'>{{ cumpleanerosTexto }}</p></td></tr><tr><td align='center' style='background-color:#fff4fa;padding:18px 20px 8px;'><img src='cid:pusheen-pastel' width='260' alt='Pusheen comiendo pastel de cumpleaños' style='display:block;width:100%;max-width:260px;height:auto;border:0;border-radius:20px;'></td></tr><tr><td align='center' style='background-color:#fff4fa;padding:18px 32px 30px;'><table role='presentation' cellpadding='0' cellspacing='0'><tr><td align='center' style='background-color:#00b0ff;background-image:linear-gradient(90deg,#00b0ff,#7c3aed,#ff3d9a);border-radius:999px;padding:14px 28px;color:#ffffff;font-size:18px;font-weight:800;line-height:1.3;'>🎉 ¡No olvides mandarle tus felicitaciones! 🎉</td></tr></table><p style='margin:20px 0 4px;font-size:14px;color:#7c3aed;font-weight:700;text-transform:uppercase;letter-spacing:2px;'>Tu equipo</p><p style='margin:0;font-size:30px;line-height:1;font-weight:900;letter-spacing:3px;font-family:\\\"Arial Black\\\",\\\"Trebuchet MS\\\",Arial,sans-serif;'><span style='color:#ff1744;'>D</span><span style='color:#00c853;'>G</span><span style='color:#00b0ff;'>T</span><span style='color:#d500f9;'>S</span><span style='color:#ff4081;'>I</span></p></td></tr><tr><td align='center' style='background-color:#ff3d9a;padding:12px 8px;font-size:24px;line-height:1;letter-spacing:6px;'>🧁🎶🍰💖🍰🎶🧁</td></tr></table></td></tr></table></body></html>\";\nconst CID_GIF = 'pusheen-pastel';\n\nconst gif = $('Obtener GIF Pusheen').first().json;\n\nconst escaparHtml = (v) => String(v ?? '')\n  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')\n  .replace(/\"/g, '&quot;').replace(/'/g, '&#39;');\nconst rellenar = (plantilla, datos) =>\n  plantilla.replace(/\\{\\{\\s*(\\w+)\\s*\\}\\}/g, (_, clave) => escaparHtml(datos[clave]));\nconst base64 = (texto) => Buffer.from(texto, 'utf8').toString('base64');\nconst partirLineas = (b64) => b64.replace(/.{1,76}/g, '$&\\r\\n');\nconst encabezadoUtf8 = (texto) => '=?UTF-8?B?' + base64(texto) + '?=';\nconst sinSaltos = (texto) => String(texto ?? '').replace(/[\\r\\n]/g, ' ');\n\nconst salida = [];\nfor (const item of $input.all()) {\n  const envio = item.json;\n  if (!envio.correo || !envio.tipo) continue; // respuesta vacía: no hay cumpleaños hoy\n\n  const esTarjeta = envio.tipo === 'tarjeta';\n  const html = rellenar(esTarjeta ? PLANTILLA_TARJETA : PLANTILLA_NOTIFICACION, envio);\n  const asunto = esTarjeta\n    ? '🎉 ¡FELICIDADES, ' + sinSaltos(envio.nombre) + '! De parte de tu equipo DGTSI'\n    : '🎈 Hoy celebramos el cumpleaños de ' + sinSaltos(envio.cumpleanerosTexto);\n  const limite = 'dgtsi_' + Math.random().toString(36).slice(2);\n\n  const mime = [\n    'To: ' + sinSaltos(envio.correo),\n    'Subject: ' + encabezadoUtf8(asunto),\n    'MIME-Version: 1.0',\n    'Content-Type: multipart/related; boundary=\"' + limite + '\"',\n    '',\n    '--' + limite,\n    'Content-Type: text/html; charset=UTF-8',\n    'Content-Transfer-Encoding: base64',\n    '',\n    partirLineas(base64(html)),\n    '--' + limite,\n    'Content-Type: ' + gif.mimeType + '; name=\"' + gif.nombreArchivo + '\"',\n    'Content-Transfer-Encoding: base64',\n    'Content-ID: <' + CID_GIF + '>',\n    'X-Attachment-Id: ' + CID_GIF,\n    'Content-Disposition: inline; filename=\"' + gif.nombreArchivo + '\"',\n    '',\n    partirLineas(gif.base64),\n    '--' + limite + '--',\n    '',\n  ].join('\\r\\n');\n\n  salida.push({\n    json: {\n      tipo: envio.tipo,\n      correo: envio.correo,\n      raw: Buffer.from(mime, 'utf8').toString('base64url'),\n    },\n  });\n}\n\nreturn salida;\n"
+      },
+      "id": "a1b2c3d4-0008-4000-8000-000000000008",
+      "name": "Armar Correos (tarjeta y avisos)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://gmail.googleapis.com/gmail/v1/users/me/messages/send",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "gmailOAuth2",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "raw",
+              "value": "={{ $json.raw }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a1b2c3d4-0009-4000-8000-000000000009",
+      "name": "Enviar Correo (Gmail API)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        880,
+        0
+      ],
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "XWEOyKm1JW1wrvFa",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Cron 08:00 AM": {
+      "main": [
+        [
+          {
+            "node": "Obtener GIF Pusheen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Obtener GIF Pusheen": {
+      "main": [
+        [
+          {
+            "node": "Consultar Envíos de Hoy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultar Envíos de Hoy": {
+      "main": [
+        [
+          {
+            "node": "Armar Correos (tarjeta y avisos)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Armar Correos (tarjeta y avisos)": {
+      "main": [
+        [
+          {
+            "node": "Enviar Correo (Gmail API)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": false
+}
