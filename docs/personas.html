@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personas Registradas</title>
+  <style>
+    :root {
+      --fondo:#a5b6d6;
+      --tarjeta: #ffffff;
+      --texto: #1e293b;
+      --texto-suave: #64748b;
+      --borde: #e2e8f0;
+      --fila-hover: #f8fafc;
+      --primario: #4f46e5;
+      --enlace: #4f46e5;
+      --acento: #db2777;
+      --chip-fondo: #eef2ff;
+      --chip-texto: #4338ca;
+      --peligro: #dc2626;
+      --peligro-fondo: #fef2f2;
+      --exito-fondo: #ecfdf5;
+      --exito-texto: #047857;
+      --error-fondo: #fef2f2;
+      --error-texto: #b91c1c;
+      --sombra: 0 20px 45px rgba(30, 41, 90, 0.16);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --fondo: #0f172a;
+        --tarjeta: #1e293b;
+        --texto: #f1f5f9;
+        --texto-suave: #94a3b8;
+        --borde: #334155;
+        --fila-hover: #233046;
+        --enlace: #a5b4fc;
+        --chip-fondo: #312e81;
+        --chip-texto: #c7d2fe;
+        --peligro: #f87171;
+        --peligro-fondo: #450a0a;
+        --exito-fondo: #064e3b;
+        --exito-texto: #a7f3d0;
+        --error-fondo: #450a0a;
+        --error-texto: #fecaca;
+        --sombra: 0 20px 45px rgba(0, 0, 0, 0.45);
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 32px 16px;
+      background: var(--fondo);
+      color: var(--texto);
+      font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    .tarjeta {
+      width: 100%;
+      max-width: 720px;
+      background: var(--tarjeta);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--sombra);
+    }
+
+    .encabezado {
+      padding: 36px 32px 28px;
+      text-align: center;
+      color: #ffffff;
+      background: linear-gradient(135deg, #1e1b4b 0%, var(--primario) 55%, var(--acento) 100%);
+    }
+
+    .encabezado .icono { font-size: 44px; line-height: 1; }
+    .encabezado h1 { margin: 14px 0 6px; font-size: 24px; font-weight: 700; }
+    .encabezado p { margin: 0; color: #e0e7ff; font-size: 14px; }
+
+    .contenido { padding: 24px 32px 28px; }
+
+    .barra {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .contador { font-size: 14px; color: var(--texto-suave); }
+    .contador strong { color: var(--texto); }
+
+    .boton-principal {
+      display: inline-block;
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--primario), var(--acento));
+      transition: transform .15s;
+    }
+    .boton-principal:hover { transform: translateY(-1px); }
+
+    .mensaje {
+      display: none;
+      margin-bottom: 16px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+    }
+    .mensaje.exito { display: block; background: var(--exito-fondo); color: var(--exito-texto); }
+    .mensaje.error { display: block; background: var(--error-fondo); color: var(--error-texto); }
+
+    ul.lista { list-style: none; margin: 0; padding: 0; border: 1px solid var(--borde); border-radius: 14px; overflow: hidden; }
+
+    .persona {
+      display: grid;
+      grid-template-columns: 42px 1fr auto auto;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--borde);
+      transition: background .15s;
+    }
+    .persona:last-child { border-bottom: none; }
+    .persona:hover { background: var(--fila-hover); }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 15px;
+      background: linear-gradient(135deg, var(--primario), var(--acento));
+    }
+
+    .datos { min-width: 0; }
+    .nombre { font-weight: 600; font-size: 15px; }
+    .correo { font-size: 13px; color: var(--texto-suave); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    .fecha {
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      color: var(--chip-texto);
+      background: var(--chip-fondo);
+      border-radius: 999px;
+    }
+
+    .eliminar {
+      padding: 8px 14px;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--peligro);
+      background: transparent;
+      border: 1px solid var(--peligro);
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .eliminar:hover { background: var(--peligro-fondo); }
+    .eliminar:disabled { opacity: .5; cursor: wait; }
+
+    .vacio { padding: 40px 16px; text-align: center; color: var(--texto-suave); font-size: 15px; }
+    .vacio .icono { font-size: 36px; margin-bottom: 8px; }
+
+    .pie {
+      padding: 16px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--texto-suave);
+      border-top: 1px solid var(--borde);
+    }
+    .pie a { color: var(--enlace); font-weight: 600; text-decoration: none; }
+    .pie a:hover { text-decoration: underline; }
+
+    @media (max-width: 560px) {
+      .contenido { padding: 20px 16px 24px; }
+      .persona { grid-template-columns: 42px 1fr; }
+      .fecha { grid-column: 2; justify-self: start; }
+      .eliminar { grid-column: 2; justify-self: start; }
+    }
+  </style>
+</head>
+<body>
+  <main class="tarjeta">
+    <header class="encabezado">
+      <div class="icono">👥</div>
+      <h1>Personas Registradas</h1>
+      <p>Quienes recibirán su tarjeta de cumpleaños</p>
+    </header>
+
+    <section class="contenido">
+      <div class="barra">
+        <span id="contador" class="contador">Cargando…</span>
+        <a class="boton-principal" href="index.html">＋ Registrar persona</a>
+      </div>
+
+      <div id="mensaje" class="mensaje" role="status" aria-live="polite"></div>
+
+      <ul id="lista" class="lista"></ul>
+    </section>
+
+    <footer class="pie"><a href="index.html">🎂 Volver al registro</a></footer>
+  </main>
+
+  <script>
+    // Si la página no viene del backend (doble clic en el archivo, Live Server, etc.),
+    // las peticiones se envían directamente al backend en localhost:3000.
+    const API = location.protocol === "file:" || location.port !== "3000" ? "http://localhost:3000" : "";
+    const lista = document.getElementById("lista");
+    const contador = document.getElementById("contador");
+    const mensaje = document.getElementById("mensaje");
+    const meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio",
+                   "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+
+    function mostrar(tipo, texto) {
+      mensaje.className = "mensaje " + tipo;
+      mensaje.textContent = texto;
+    }
+
+    function iniciales(nombre) {
+      return nombre.split(/\s+/).filter(Boolean).slice(0, 2).map((p) => p[0].toUpperCase()).join("");
+    }
+
+    function crearElemento(etiqueta, clase, texto) {
+      const el = document.createElement(etiqueta);
+      if (clase) el.className = clase;
+      if (texto !== undefined) el.textContent = texto;
+      return el;
+    }
+
+    function actualizarContador() {
+      const total = lista.querySelectorAll(".persona").length;
+      contador.innerHTML = "";
+      contador.append(crearElemento("strong", "", String(total)), total === 1 ? " persona registrada" : " personas registradas");
+      if (total === 0) {
+        lista.innerHTML = "";
+        const vacio = crearElemento("li", "vacio");
+        vacio.append(crearElemento("div", "icono", "🎈"), "Aún no hay personas registradas.");
+        lista.append(vacio);
+      }
+    }
+
+    function crearFila(persona) {
+      const fila = crearElemento("li", "persona");
+      const datos = crearElemento("div", "datos");
+      datos.append(
+        crearElemento("div", "nombre", persona.nombre),
+        crearElemento("div", "correo", persona.correo || "Sin correo registrado"),
+      );
+
+      const boton = crearElemento("button", "eliminar", "🗑 Eliminar");
+      boton.type = "button";
+      boton.addEventListener("click", () => eliminar(persona, fila, boton));
+
+      fila.append(
+        crearElemento("div", "avatar", iniciales(persona.nombre)),
+        datos,
+        crearElemento("span", "fecha", `🎂 ${persona.dia} de ${meses[persona.mes - 1]}`),
+        boton,
+      );
+      return fila;
+    }
+
+    async function cargar() {
+      try {
+        const respuesta = await fetch(`${API}/api/personas`);
+        if (!respuesta.ok) throw new Error();
+        const personas = await respuesta.json();
+        lista.innerHTML = "";
+        personas.forEach((p) => lista.append(crearFila(p)));
+        actualizarContador();
+      } catch {
+        contador.textContent = "";
+        mostrar("error", "No se pudo cargar la lista de personas. Inténtalo de nuevo.");
+      }
+    }
+
+    async function eliminar(persona, fila, boton) {
+      if (!confirm(`¿Eliminar el registro de ${persona.nombre}?`)) return;
+
+      boton.disabled = true;
+      try {
+        const respuesta = await fetch(`${API}/api/personas/${persona.id}`, { method: "DELETE" });
+        const cuerpo = await respuesta.json().catch(() => ({}));
+
+        if (respuesta.ok || respuesta.status === 404) {
+          // 404: ya estaba inactiva (p. ej. eliminada desde otra pestaña); igual se quita de la vista.
+          fila.remove();
+          actualizarContador();
+          mostrar("exito", `Se eliminó el registro de ${persona.nombre}.`);
+        } else {
+          boton.disabled = false;
+          mostrar("error", cuerpo.mensaje || "No se pudo eliminar el registro.");
+        }
+      } catch {
+        boton.disabled = false;
+        mostrar("error", "No se pudo conectar con el servidor. Inténtalo de nuevo.");
+      }
+    }
+
+    cargar();
+  </script>
+</body>
+</html>
